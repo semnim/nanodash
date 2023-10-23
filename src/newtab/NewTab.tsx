@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import './NewTab.css'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import mockTaskItems from './tasks/mockTaskItems'
+import { TasksList } from './tasks/TasksList'
 
 export const NewTab = () => {
   const getTime = () => {
@@ -24,10 +25,20 @@ export const NewTab = () => {
     }
   }, [])
 
+  const tasks = ['eat breakfast', 'go to uni', 'work for approx. 5 hours', 'have dinner']
   return (
-    <section className="h-screen w-screen">
+    <section className="">
       <h1>{time}</h1>
-      <Button>Test</Button>
+      <Tabs defaultValue="tasks" className="h-screen w-screen p-4">
+        <TabsList>
+          <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tasks">
+          <TasksList tasks={mockTaskItems}></TasksList>
+        </TabsContent>
+        <TabsContent value="notes">Change your password here.</TabsContent>
+      </Tabs>
     </section>
   )
 }
