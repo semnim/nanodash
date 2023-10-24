@@ -26,7 +26,19 @@ export const EditableTextComponent = ({
     resetValueEditStates(value)
   }
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if ((event.key === 'Enter' && !event.shiftKey) || event.key === 'Escape') {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+      setValue((prev) => `${prev}\t`)
+    }
+    const isSubmit = event.key === 'Enter' && !event.shiftKey
+    const isClose = event.key === 'Escape'
+
+    if (isSubmit && value.trim().length < 1) {
+      setValue(initialValue)
+      setIsEditing(false)
+      return
+    }
+    if (isSubmit || isClose) {
       submitChanges()
     }
   }
@@ -34,6 +46,12 @@ export const EditableTextComponent = ({
   const editComponent =
     type === 'input' ? (
       <Input
+        onFocus={(event) =>
+          event.target.setSelectionRange(
+            event.currentTarget.value.length,
+            event.currentTarget.value.length,
+          )
+        }
         onBlur={() => submitChanges()}
         className={'font-semibold leading-none tracking-tight'}
         autoFocus
@@ -42,13 +60,21 @@ export const EditableTextComponent = ({
           setValue(event.target.value)
         }}
         onKeyDown={handleKeyDown}
+        required
       />
     ) : (
       <Textarea
         onBlur={() => submitChanges()}
+        onFocus={(event) =>
+          event.target.setSelectionRange(
+            event.currentTarget.value.length,
+            event.currentTarget.value.length,
+          )
+        }
         className={'font-semibold leading-none tracking-tight'}
         autoFocus
         value={value}
+        required
         onChange={(event) => {
           setValue(event.target.value)
         }}
