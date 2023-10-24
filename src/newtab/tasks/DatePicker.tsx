@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { TaskObject } from '../NewTab'
-import { TaskItem } from './TaskItemCard'
+import { TaskItem } from './TaskCard'
 
 export function DatePickerWithPresets({
   task,

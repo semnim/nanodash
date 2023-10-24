@@ -1,5 +1,5 @@
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
-import { TasksList } from './TasksList'
+import { TaskColumn } from './TaskColumn'
 import { TaskObject } from '../NewTab'
 import mockTaskItems from './mock/mockTaskItems'
 import { useState } from 'react'
@@ -60,17 +60,17 @@ export const TasksView = () => {
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="todo">
         {(provided) => (
-          <TasksList title={'To Do'} tasks={tasks.todo} setTasks={setTasks} provided={provided} />
+          <TaskColumn title={'To Do'} tasks={tasks.todo} setTasks={setTasks} provided={provided} />
         )}
       </Droppable>
       <Droppable droppableId="doing">
         {(provided) => (
-          <TasksList title={'Doing'} tasks={tasks.doing} setTasks={setTasks} provided={provided} />
+          <TaskColumn title={'Doing'} tasks={tasks.doing} setTasks={setTasks} provided={provided} />
         )}
       </Droppable>
       <Droppable droppableId="done">
         {(provided) => (
-          <TasksList title={'Done'} tasks={tasks.done} setTasks={setTasks} provided={provided} />
+          <TaskColumn title={'Done'} tasks={tasks.done} setTasks={setTasks} provided={provided} />
         )}
       </Droppable>
     </DragDropContext>

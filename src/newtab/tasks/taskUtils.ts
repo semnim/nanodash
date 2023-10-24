@@ -1,4 +1,4 @@
-import { TaskItem } from './TaskItemCard'
+import { TaskItem } from './TaskCard'
 
 export const sortTasks = (tasks: TaskItem[]) => {
   const sortedByPriority = sortByPriority(tasks)

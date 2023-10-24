@@ -36,7 +36,7 @@ export const priorityColors = {
   medium: 'text-yellow-600',
   high: 'text-red-600',
 }
-export const TaskItemCard = ({ task, setTasks }: TaskItemCardProps) => {
+export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   const [isEditing, setIsEditing] = useState({
     title: false,
     description: false,

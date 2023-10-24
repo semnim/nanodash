@@ -1,6 +1,6 @@
 import React from 'react'
 import { Draggable, DroppableProvided } from 'react-beautiful-dnd'
-import { TaskItem, TaskItemCard } from './TaskItemCard'
+import { TaskItem, TaskCard } from './TaskCard'
 import { TaskObject } from '../NewTab'
 import { AddCardPlaceholder } from './AddCardPlaceholder'
 
@@ -11,7 +11,7 @@ export interface TasksListProps {
   provided: DroppableProvided
 }
 
-export const TasksList = ({ provided, tasks, setTasks, title }: TasksListProps) => {
+export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps) => {
   return (
     <div
       className="grid place-content-start w-full justify-stretch"
@@ -54,7 +54,7 @@ export const TasksList = ({ provided, tasks, setTasks, title }: TasksListProps) 
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
-              <TaskItemCard key={task.id} task={task} setTasks={setTasks} />
+              <TaskCard key={task.id} task={task} setTasks={setTasks} />
             </div>
           )}
         </Draggable>
