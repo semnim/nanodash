@@ -26,7 +26,7 @@ export const EditableTextComponent = ({
     resetValueEditStates(value)
   }
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === 'Escape') {
+    if ((event.key === 'Enter' && !event.shiftKey) || event.key === 'Escape') {
       submitChanges()
     }
   }
@@ -38,7 +38,9 @@ export const EditableTextComponent = ({
         className={'font-semibold leading-none tracking-tight'}
         autoFocus
         value={value}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) => {
+          setValue(event.target.value)
+        }}
         onKeyDown={handleKeyDown}
       />
     ) : (
@@ -47,10 +49,16 @@ export const EditableTextComponent = ({
         className={'font-semibold leading-none tracking-tight'}
         autoFocus
         value={value}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) => {
+          setValue(event.target.value)
+        }}
         onKeyDown={handleKeyDown}
       />
     )
 
-  return <span onClick={() => setIsEditing(true)}>{isEditing ? editComponent : initialValue}</span>
+  return (
+    <div className="whitespace-pre-wrap break-words break-all" onClick={() => setIsEditing(true)}>
+      {isEditing ? editComponent : initialValue}
+    </div>
+  )
 }
