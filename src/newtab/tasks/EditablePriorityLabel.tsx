@@ -17,10 +17,6 @@ export const EditablePriorityLabel = ({
     setIsEditing(false)
   }
 
-  useEffect(() => {
-    console.log(isEditing)
-  }, [isEditing])
-
   const submitChanges = (newValue: 'low' | 'medium' | 'high') => {
     applyChanges(newValue)
     resetValueEditStates(value)
