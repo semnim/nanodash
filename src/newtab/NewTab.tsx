@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
 import './NewTab.css'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import mockTaskItems from './tasks/mock/mockTaskItems'
-import { TasksList, TasksListProps } from './tasks/TasksList'
 import { TaskItem } from './tasks/TaskItemCard'
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
+import { TasksView } from './tasks/TasksView'
 
 export type TaskObject = { todo: TaskItem[]; doing: TaskItem[]; done: TaskItem[] }
 export type User = { name: string }
@@ -19,12 +17,6 @@ export const NewTab = () => {
   }
 
   const [time, setTime] = useState<string>(getTime())
-  const initial = {
-    todo: mockTaskItems.filter((t) => t.status === 'todo' && !t.completed),
-    doing: mockTaskItems.filter((t) => t.status === 'doing' && !t.completed),
-    done: mockTaskItems.filter((t) => t.completed),
-  }
-  const [tasks, setTasks] = useState<TaskObject>(initial)
 
   const [user, setUser] = useState<User>({ name: 'Semjon' })
   useEffect(() => {
@@ -37,50 +29,6 @@ export const NewTab = () => {
     }
   }, [])
   const [tabsValue, setTabsValue] = useState<'home' | 'tasks' | 'notes' | 'settings'>('home')
-
-  const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) {
-      return // The item was dropped outside of the valid drop area
-    }
-
-    const sourceIndex = result.source.index
-    const destinationIndex = result.destination.index
-    const sourceColumnId = result.source.droppableId as 'todo' | 'doing' | 'done'
-    const destinationColumnId = result.destination.droppableId as 'todo' | 'doing' | 'done'
-
-    const allTasks = [...tasks.todo, ...tasks.doing, ...tasks.done]
-    const updatedTasks = { ...tasks }
-
-    const task = allTasks.find((t) => t.id.toString() === result.draggableId)
-
-    if (!task) {
-      return
-    }
-
-    // inside same column
-    if (sourceColumnId === destinationColumnId) {
-      updatedTasks[sourceColumnId].splice(sourceIndex, 1)
-      updatedTasks[sourceColumnId].splice(destinationIndex, 0, task)
-      return
-    }
-
-    // to "done"
-    if (destinationColumnId === 'done') {
-      task.completed = true
-      updatedTasks[sourceColumnId].splice(sourceIndex, 1)
-      updatedTasks[destinationColumnId].splice(destinationIndex, 0, task)
-      return
-    }
-
-    // from "done"
-    if (sourceColumnId === 'done') {
-      task.completed = false
-    }
-
-    updatedTasks[sourceColumnId].splice(sourceIndex, 1)
-    updatedTasks[destinationColumnId].splice(destinationIndex, 0, task)
-    setTasks(updatedTasks)
-  }
 
   // todo: useAnimation https://auto-animate.formkit.com/
   return (
@@ -173,38 +121,7 @@ export const NewTab = () => {
         </TabsContent>
 
         <TabsContent value="tasks" className="grid grid-cols-3 justify-items-center gap-4">
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="todo">
-              {(provided) => (
-                <TasksList
-                  title={'To Do'}
-                  tasks={tasks.todo}
-                  setTasks={setTasks}
-                  provided={provided}
-                />
-              )}
-            </Droppable>
-            <Droppable droppableId="doing">
-              {(provided) => (
-                <TasksList
-                  title={'Doing'}
-                  tasks={tasks.doing}
-                  setTasks={setTasks}
-                  provided={provided}
-                />
-              )}
-            </Droppable>
-            <Droppable droppableId="done">
-              {(provided) => (
-                <TasksList
-                  title={'Done'}
-                  tasks={tasks.done}
-                  setTasks={setTasks}
-                  provided={provided}
-                />
-              )}
-            </Droppable>
-          </DragDropContext>
+          <TasksView />
         </TabsContent>
         <TabsContent value="notes"></TabsContent>
         <TabsContent value="settings"></TabsContent>
