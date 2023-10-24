@@ -11,7 +11,7 @@ export const AddCardPlaceholder = ({ onClick }: { onClick: () => void }) => {
   return (
     <Card
       onClick={onClick}
-      className="w-[400px] h-[170px] my-4 mx-auto border-dashed border-2 bg-opacity-40 bg-transparent hover:bg-gray-500 hover:bg-opacity-60 cursor-pointer rounded p-4 transition duration-300 ease-in-out"
+      className="w-[400px] min-h-[200px] h-[170px] my-4 mx-auto border-dashed border-2 bg-opacity-40 bg-transparent hover:bg-gray-500 hover:bg-opacity-60 cursor-pointer rounded p-4 transition duration-300 ease-in-out"
     >
       <CardHeader>
         <CardTitle className="text-lg font-semibold opacity-100 text-center text-[#fff] text-opacity-100">
