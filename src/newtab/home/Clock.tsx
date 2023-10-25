@@ -21,7 +21,7 @@ export const Clock = () => {
   }, [])
 
   return (
-    <h1 className="text-white text-center select-none text-[9rem] tracking-wider ">
+    <h1 className="text-white text-center select-none text-[9rem] tracking-wider font-medium">
       {
         <>
           {time[0]}
