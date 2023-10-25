@@ -2,42 +2,27 @@
 
 > a chrome extension tools built with Vite + React-ts, and Manifest v3
 
-## Installing
+## Productivity fueling, fully interactive dashboard extension for Chrome.
 
-1. Check if your `Node.js` version is >= **14**.
-2. Change or configurate the name of your extension on `src/manifest`.
-3. Run `npm install` to install the dependencies.
+## Motivation
 
-## Developing
+Buying extensions is expensive and I know how to program, so I might rather build my own for free. 
+I like using to-do apps, timers, and notes/reminders, those being the key features. I also love fully interactive applications, where i can drag and drop, 
+style on the run, and don't need too many clicks.
+## Features:
+- Drag and drop to-do's with categorization
+- Supports markdown
+- Todo notes can be inlined - styled on the run
+- Home screen fetching quotes, displaying time
+- Todo: Reminders & notes
+- Todo: Settings, customization by user (colors, images, ...)
 
-run the command
+## Showcase 
 
-```shell
-$ cd nanodash
-
-$ npm run dev
-```
-
-### Chrome Extension Developer Mode
-
-1. set your Chrome browser 'Developer mode' up
-2. click 'Load unpacked', and select `nanodash/build` folder
-
-### Nomal FrontEnd Developer Mode
-
-1. access `http://0.0.0.0:3000/`
-2. when debugging popup page, open `http://0.0.0.0:3000//popup.html`
-3. when debugging options page, open `http://0.0.0.0:3000//options.html`
-
-## Packing
-
-After the development of your extension run the command
-
-```shell
-$ npm run build
-```
-
-Now, the content of `build` folder will be the extension ready to be submitted to the Chrome Web Store. Just take a look at the [official guide](https://developer.chrome.com/webstore/publish) to more infos about publishing.
+<img width="1680" alt="Screenshot 2023-10-25 at 02 14 29" src="https://github.com/semnim/nanodash/assets/82184629/aff77099-8675-4dc5-be9f-c17f804a10d2">
+<img width="1680" alt="Screenshot 2023-10-25 at 02 14 37" src="https://github.com/semnim/nanodash/assets/82184629/6484976f-0c64-4b53-88bd-4c08cd6e91ad">
+<img width="1680" alt="Screenshot 2023-10-25 at 02 14 59" src="https://github.com/semnim/nanodash/assets/82184629/44c788d2-fdfa-4ad7-91c3-9ad12502aae4">
+<img width="1680" alt="Screenshot 2023-10-25 at 02 16 20" src="https://github.com/semnim/nanodash/assets/82184629/3960e744-ad13-44be-9b09-bcfe5d5e3da8">
 
 ---
 
