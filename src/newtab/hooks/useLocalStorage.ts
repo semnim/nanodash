@@ -14,10 +14,12 @@ export const useLocalStorage = (initialKey: string, initialValue?: string) => {
     return JSON.parse(fromStorage)
   }
 
+  const getItemKeys = () => {
+    return Object.keys(localStorage).filter((savedKey) => savedKey.startsWith(initialKey))
+  }
+
   const getMultipleItems = () => {
-    const fromStorageKeys = Object.keys(localStorage).filter((savedKey) =>
-      savedKey.startsWith(initialKey),
-    )
+    const fromStorageKeys = getItemKeys()
     const items = fromStorageKeys.map((itemKey) => getItem(itemKey))
 
     return items
@@ -27,5 +29,5 @@ export const useLocalStorage = (initialKey: string, initialValue?: string) => {
     const itemKey = key ?? initialKey
     localStorage.removeItem(itemKey)
   }
-  return { getItem, getMultipleItems, setItem, remove }
+  return { getItem, getMultipleItems, setItem, remove, getItemKeys }
 }

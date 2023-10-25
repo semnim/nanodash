@@ -5,10 +5,10 @@ export const Clock = () => {
     const date = new Date()
     const hours = String(date.getHours()).padStart(2, '0')
     const minutes = String(date.getMinutes()).padStart(2, '0')
-    return `${hours}:${minutes}`
+    return [hours, minutes]
   }
 
-  const [time, setTime] = useState<string>(getTime())
+  const [time, setTime] = useState<string[]>(getTime())
 
   useEffect(() => {
     let intervalId = setInterval(() => {
@@ -20,5 +20,15 @@ export const Clock = () => {
     }
   }, [])
 
-  return <h1 className="text-white text-center select-none text-[9rem] tracking-wider ">{time}</h1>
+  return (
+    <h1 className="text-white text-center select-none text-[9rem] tracking-wider ">
+      {
+        <>
+          {time[0]}
+          <span className="blink">:</span>
+          {time[1]}
+        </>
+      }
+    </h1>
+  )
 }
