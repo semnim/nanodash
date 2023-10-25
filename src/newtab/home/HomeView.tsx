@@ -4,7 +4,7 @@ import { Quote } from './Quote'
 
 export const HomeView = () => {
   return (
-    <div className="grid h-screen row-span-2">
+    <div className="grid h-screen row-span-1">
       <Clock />
       <UserGreeting />
       <Quote />

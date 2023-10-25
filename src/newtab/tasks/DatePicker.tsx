@@ -49,7 +49,13 @@ export function DatePickerWithPresets({
           }}
           variant="ghost"
         >
-          <span>{!date ? 'No Deadline' : `Due on ${date.toLocaleDateString()}`}</span>
+          <span
+            className={
+              date && new Date(date).getTime() - Date.now() < 0 ? 'text-red-600' : 'text-black'
+            }
+          >
+            {!date ? 'No Deadline' : `Due on ${new Date(date).toLocaleDateString()}`}
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="flex w-auto flex-col space-y-2 p-2">

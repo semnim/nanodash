@@ -1,20 +1,30 @@
-import { useEffect, useState } from 'react'
+export const useLocalStorage = (initialKey: string, initialValue?: string) => {
+  const setItem = (value: unknown, newKey?: string) => {
+    const itemKey = newKey ?? initialKey
 
-export const useLocalStorage = (key: string, initialValue?: string) => {
-  const setItem = (value: unknown) => {
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(itemKey, JSON.stringify(value))
   }
 
-  const getItem = () => {
-    const fromStorage = localStorage.getItem(key)
+  const getItem = (key?: string) => {
+    const itemKey = key ?? initialKey
+    const fromStorage = localStorage.getItem(itemKey)
     if (!fromStorage) {
       return null
     }
     return JSON.parse(fromStorage)
   }
 
-  const remove = () => {
-    localStorage.removeItem(key)
+  const getMultipleItems = () => {
+    const fromStorageKeys = Object.keys(localStorage).filter((savedKey) =>
+      savedKey.startsWith(initialKey),
+    )
+    const items = fromStorageKeys.map((itemKey) => getItem(itemKey))
+
+    return items
   }
-  return { getItem, setItem, remove }
+
+  const remove = () => {
+    localStorage.removeItem(initialKey)
+  }
+  return { getItem, getMultipleItems, setItem, remove }
 }

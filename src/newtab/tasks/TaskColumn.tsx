@@ -3,6 +3,7 @@ import { Draggable, DroppableProvided } from 'react-beautiful-dnd'
 import { TaskItem, TaskCard } from './TaskCard'
 import { AddCardPlaceholder } from './AddCardPlaceholder'
 import { TaskObject } from './TasksView'
+import { v4 as uuidv4 } from 'uuid'
 
 export interface TasksListProps {
   tasks: TaskItem[]
@@ -12,6 +13,25 @@ export interface TasksListProps {
 }
 
 export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps) => {
+  const handleAddTask = () =>
+    setTasks((prev) => {
+      const allTasks = [...prev.todo, ...prev.doing, ...prev.done]
+      const newTask: TaskItem = {
+        id: uuidv4(),
+        title: 'Add a title',
+        description: 'Add a description',
+        dueDate: undefined,
+        priority: 'low',
+        status: 'todo',
+        completed: false,
+      }
+      const newObj = {
+        ...prev,
+        ['todo']: [...prev.todo, newTask],
+      }
+      return newObj
+    })
+
   return (
     <div
       className="grid place-content-start w-full justify-stretch"
@@ -21,29 +41,7 @@ export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps)
       <h2 className="text-center scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-white">
         {title}
       </h2>
-      {title === 'To Do' && (
-        <AddCardPlaceholder
-          onClick={() =>
-            setTasks((prev) => {
-              const allTasks = [...prev.todo, ...prev.doing, ...prev.done]
-              const newTask: TaskItem = {
-                id: Math.max(...allTasks.map((t) => t.id)) + 1,
-                title: 'Add a title',
-                description: 'Add a description',
-                dueDate: undefined,
-                priority: 'low',
-                status: 'todo',
-                completed: false,
-              }
-              const newObj = {
-                ...prev,
-                ['todo']: [...prev.todo, newTask],
-              }
-              return newObj
-            })
-          }
-        />
-      )}
+      {title === 'To Do' && <AddCardPlaceholder onClick={handleAddTask} />}
       {tasks.map((task, index) => (
         <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
           {(provided) => (

@@ -13,10 +13,9 @@ import { EditableTextComponent } from './EditableTextComponent'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import { EditablePriorityLabel } from './EditablePriorityLabel'
 import { TaskObject } from './TasksView'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export interface TaskItem {
-  id: number
+  id: string
   title: string
   description: string
   dueDate: Date | undefined
@@ -42,7 +41,6 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   const handleApplyLabelEditChanges = (newValue: string, field: 'title' | 'description') =>
     setTasks((prev) => {
       const status = task.status
-
       const newTasks = prev[status].map((t) => {
         if (t.id === task.id) {
           return { ...task, [field]: newValue }

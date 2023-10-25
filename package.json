@@ -41,7 +41,8 @@
     "react-loader-spinner": "^5.4.5",
     "react-markdown": "^9.0.0",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.19",
@@ -51,6 +52,7 @@
     "@types/react-beautiful-dnd": "^13.1.6",
     "@types/react-dom": "^18.2.13",
     "@types/remarkable": "^2.0.7",
+    "@types/uuid": "^9.0.6",
     "@vitejs/plugin-react": "^4.1.0",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",

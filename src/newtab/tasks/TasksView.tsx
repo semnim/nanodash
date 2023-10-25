@@ -1,18 +1,29 @@
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 import { TaskColumn } from './TaskColumn'
-import mockTaskItems from '../mock/mockTaskItems'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TaskItem } from './TaskCard'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
 export type TaskObject = { todo: TaskItem[]; doing: TaskItem[]; done: TaskItem[] }
 
 export const TasksView = () => {
+  const { setItem, getMultipleItems } = useLocalStorage('task')
+
+  const fromStorage = getMultipleItems()
   const initial = {
-    todo: mockTaskItems.filter((t) => t.status === 'todo' && !t.completed),
-    doing: mockTaskItems.filter((t) => t.status === 'doing' && !t.completed),
-    done: mockTaskItems.filter((t) => t.completed),
+    todo: fromStorage.filter((t) => t.status === 'todo' && !t.completed),
+    doing: fromStorage.filter((t) => t.status === 'doing' && !t.completed),
+    done: fromStorage.filter((t) => t.completed),
   }
   const [tasks, setTasks] = useState<TaskObject>(initial)
+
+  useEffect(() => {
+    const allTasks = [...tasks.todo, ...tasks.doing, ...tasks.done]
+
+    allTasks
+      .map((task) => ({ ...task, dueDate: new Date(task.dueDate ?? Date.now()).toISOString() }))
+      .forEach((task) => setItem(task, `task-${task.id}`))
+  }, [tasks])
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
