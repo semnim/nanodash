@@ -1,8 +1,10 @@
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 import { TaskColumn } from './TaskColumn'
-import { TaskObject } from '../NewTab'
-import mockTaskItems from './mock/mockTaskItems'
+import mockTaskItems from '../mock/mockTaskItems'
 import { useState } from 'react'
+import { TaskItem } from './TaskCard'
+
+export type TaskObject = { todo: TaskItem[]; doing: TaskItem[]; done: TaskItem[] }
 
 export const TasksView = () => {
   const initial = {

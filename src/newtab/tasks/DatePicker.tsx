@@ -13,8 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { TaskObject } from '../NewTab'
 import { TaskItem } from './TaskCard'
+import { TaskObject } from './TasksView'
 
 export function DatePickerWithPresets({
   task,

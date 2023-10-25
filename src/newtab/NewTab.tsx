@@ -1,75 +1,60 @@
-import { useState, useEffect } from 'react'
 import './NewTab.css'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { TaskItem } from './tasks/TaskCard'
 import { TasksView } from './tasks/TasksView'
 import { DrawingPinIcon, GearIcon, HomeIcon, LayoutIcon } from '@radix-ui/react-icons'
+import { HomeView } from './home/HomeView'
+import { TabOption, useTabs } from './hooks/useTabs'
+import { capitalize } from './tasks/PrioritySelect'
+import { useEffect, useRef } from 'react'
+import autoAnimate from '@formkit/auto-animate'
 
-export type TaskObject = { todo: TaskItem[]; doing: TaskItem[]; done: TaskItem[] }
-export type User = { name: string }
+const ConditionalTabLabel = ({ tab, label }: { tab: string; label: string }) => {
+  return tab === label ? <span>{capitalize(label)}</span> : null
+}
+
 export const NewTab = () => {
-  const [showSeconds, setShowSeconds] = useState(true)
-  const getTime = () => {
-    const date = new Date()
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    const seconds = String(date.getSeconds()).padStart(2, '0')
-    return `${hours}:${minutes}:${seconds}`
-  }
+  const { tab, setTab } = useTabs()
 
-  const [time, setTime] = useState<string>(getTime())
-
-  const [user, setUser] = useState<User>({ name: 'Semjon' })
-
-  useEffect(() => {
-    let intervalId = setInterval(() => {
-      setTime(getTime())
-    }, 1000)
-
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [])
-  const [tabsValue, setTabsValue] = useState<'home' | 'tasks' | 'notes' | 'settings'>('tasks')
-
-  // todo: useAnimation https://auto-animate.formkit.com/
   return (
     <section>
-      <Tabs defaultValue="tasks" className="h-screen p-4 w-screen">
+      <Tabs
+        defaultValue="tasks"
+        value={tab}
+        onValueChange={(newValue) => setTab(newValue as TabOption)}
+        className="h-screen p-4 w-screen"
+      >
         <TabsList>
-          <TabsTrigger className="gap-2" value="home" onClick={() => setTabsValue('home')}>
+          <TabsTrigger className="gap-2" value="home" onClick={() => setTab('home')}>
             <HomeIcon />
-            {tabsValue === 'home' && 'Home'}
+            <ConditionalTabLabel label="home" tab={tab} />
           </TabsTrigger>
-          <TabsTrigger className="gap-2" value="tasks" onClick={() => setTabsValue('tasks')}>
+
+          <TabsTrigger className="gap-2" value="tasks" onClick={() => setTab('tasks')}>
             <LayoutIcon />
-            {tabsValue === 'tasks' && 'Tasks'}
+            <ConditionalTabLabel label="tasks" tab={tab} />
           </TabsTrigger>
-          <TabsTrigger className="gap-2" value="notes" onClick={() => setTabsValue('notes')}>
+
+          <TabsTrigger className="gap-2" value="notes" onClick={() => setTab('notes')}>
             <DrawingPinIcon />
-            {tabsValue === 'notes' && 'Notes'}
+            <ConditionalTabLabel label="notes" tab={tab} />
           </TabsTrigger>
-          <TabsTrigger className="gap-2" value="settings" onClick={() => setTabsValue('settings')}>
+
+          <TabsTrigger className="gap-2" value="settings" onClick={() => setTab('settings')}>
             <GearIcon />
-            {tabsValue === 'settings' && 'Settings'}
+            <ConditionalTabLabel label="settings" tab={tab} />
           </TabsTrigger>
         </TabsList>
+
         <TabsContent value="home">
-          <h1
-            className="text-white text-center cursor-pointer select-none"
-            onClick={() => setShowSeconds(!showSeconds)}
-          >
-            {time}
-          </h1>
-          <h2 className="text-white text-3xl text-center cursor-pointer select-none">
-            {`Welcome, ${user.name}`}
-          </h2>
+          <HomeView />
         </TabsContent>
 
         <TabsContent value="tasks" className="grid grid-cols-3 justify-items-center gap-4">
           <TasksView />
         </TabsContent>
+
         <TabsContent value="notes"></TabsContent>
+
         <TabsContent value="settings"></TabsContent>
       </Tabs>
     </section>

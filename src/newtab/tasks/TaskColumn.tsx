@@ -1,8 +1,8 @@
 import React from 'react'
 import { Draggable, DroppableProvided } from 'react-beautiful-dnd'
 import { TaskItem, TaskCard } from './TaskCard'
-import { TaskObject } from '../NewTab'
 import { AddCardPlaceholder } from './AddCardPlaceholder'
+import { TaskObject } from './TasksView'
 
 export interface TasksListProps {
   tasks: TaskItem[]

@@ -1,4 +1,4 @@
-import { TaskItem } from '../TaskCard'
+import { TaskItem } from '../tasks/TaskCard'
 
 const mockTaskItems: TaskItem[] = [
   {

@@ -1,6 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { useState } from 'react'
 import { Textarea } from '@/components/ui/textarea'
+import Markdown from 'react-markdown'
 
 export type EditableTextComponentType = 'input' | 'textarea' | 'select'
 
@@ -71,7 +72,7 @@ export const EditableTextComponent = ({
             event.currentTarget.value.length,
           )
         }
-        className={'font-semibold leading-none tracking-tight'}
+        className={' min-h-[200px] font-semibold leading-none tracking-tight'}
         autoFocus
         value={value}
         required
@@ -83,8 +84,11 @@ export const EditableTextComponent = ({
     )
 
   return (
-    <div className="whitespace-pre-wrap break-words break-all" onClick={() => setIsEditing(true)}>
-      {isEditing ? editComponent : initialValue}
+    <div
+      className="[&>ul]:list-disc [&>ul]:px-4 whitespace-pre-wrap break-words break-all"
+      onClick={() => setIsEditing(true)}
+    >
+      {isEditing ? editComponent : <Markdown>{initialValue}</Markdown>}
     </div>
   )
 }

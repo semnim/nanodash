@@ -10,7 +10,8 @@ section::before {
   background-size: cover;
   filter: blur(3px);
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center;
+  filter: contrast(75%) brightness(75%);
 }
 
 section {

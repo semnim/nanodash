@@ -7,13 +7,13 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-import { TaskObject } from '../NewTab'
 import { Button } from '@/components/ui/button'
 import { DatePickerWithPresets } from './DatePicker'
 import { EditableTextComponent } from './EditableTextComponent'
 import { Cross2Icon } from '@radix-ui/react-icons'
-import { PrioritySelect } from './PrioritySelect'
 import { EditablePriorityLabel } from './EditablePriorityLabel'
+import { TaskObject } from './TasksView'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export interface TaskItem {
   id: number
@@ -87,6 +87,7 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
       }
     })
   }
+
   return (
     <Card
       className={`w-[400px] min-h-[200px] my-4 mx-auto ${task.completed ? 'line-through' : ''}`}
