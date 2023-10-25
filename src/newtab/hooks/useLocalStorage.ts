@@ -23,8 +23,9 @@ export const useLocalStorage = (initialKey: string, initialValue?: string) => {
     return items
   }
 
-  const remove = () => {
-    localStorage.removeItem(initialKey)
+  const remove = (key?: string) => {
+    const itemKey = key ?? initialKey
+    localStorage.removeItem(itemKey)
   }
   return { getItem, getMultipleItems, setItem, remove }
 }

@@ -7,7 +7,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 export type TaskObject = { todo: TaskItem[]; doing: TaskItem[]; done: TaskItem[] }
 
 export const TasksView = () => {
-  const { setItem, getMultipleItems } = useLocalStorage('task')
+  const { setItem, getMultipleItems, remove } = useLocalStorage('task')
 
   const fromStorage = getMultipleItems()
   const initial = {
@@ -19,10 +19,20 @@ export const TasksView = () => {
 
   useEffect(() => {
     const allTasks = [...tasks.todo, ...tasks.doing, ...tasks.done]
+    const allItems = getMultipleItems()
 
+    if (allItems.length > allTasks.length) {
+      allItems.forEach((item) => {
+        if (!allTasks.find((t) => t.id === item.id)) {
+          remove(`task-${item.id}`)
+        }
+      })
+    }
     allTasks
       .map((task) => ({ ...task, dueDate: new Date(task.dueDate ?? Date.now()).toISOString() }))
-      .forEach((task) => setItem(task, `task-${task.id}`))
+      .forEach((task) => {
+        setItem(task, `task-${task.id}`)
+      })
   }, [tasks])
 
   const handleDragEnd = (result: DropResult) => {
