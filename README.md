@@ -6,9 +6,11 @@
 
 ## Motivation
 
-Buying extensions is expensive and I know how to program, so I might rather build my own for free. 
-I like using to-do apps, timers, and notes/reminders, those being the key features. I also love fully interactive applications, where i can drag and drop, 
-style on the run, and don't need too many clicks.
+Buying extensions is expensive and I know how to program, so why not build my own one for free? 
+
+I like using to-do apps, timers, and notes/reminders, those being the key features. I also love fully interactive applications, where I can drag and drop, 
+edit & style on the run, and don't need too many clicks.
+
 ## Features:
 - Drag and drop to-do's with categorization
 - Supports markdown
