@@ -15,7 +15,6 @@ export interface TasksListProps {
 export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps) => {
   const handleAddTask = () =>
     setTasks((prev) => {
-      const allTasks = [...prev.todo, ...prev.doing, ...prev.done]
       const newTask: TaskItem = {
         id: uuidv4(),
         title: 'Add a title',

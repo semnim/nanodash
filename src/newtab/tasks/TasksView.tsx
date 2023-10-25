@@ -76,6 +76,8 @@ export const TasksView = () => {
 
     updatedTasks[sourceColumnId].splice(sourceIndex, 1)
     updatedTasks[destinationColumnId].splice(destinationIndex, 0, task)
+
+    updatedTasks[destinationColumnId][destinationIndex].status = destinationColumnId
     setTasks(updatedTasks)
   }
 

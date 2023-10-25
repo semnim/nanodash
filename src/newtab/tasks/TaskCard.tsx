@@ -78,7 +78,6 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
           ['done']: prev['done'].filter((t) => t.id !== task.id),
         }
       }
-
       return {
         ...prev,
         [task.status]: prev[task.status].filter((t) => t.id !== task.id),
@@ -89,9 +88,7 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   return (
     <div className="py-4">
       <Card
-        className={`w-[400px] bg-primary min-h-[200px] mx-auto ${
-          task.completed ? 'line-through' : ''
-        }`}
+        className={`w-[400px] bg-primary min-h-[200px] mx-auto ${task.completed && 'line-through'}`}
       >
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle className="text-[1.2rem] flex-grow">
