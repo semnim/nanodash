@@ -33,9 +33,9 @@ export const ItemTypes = {
   TASK: 'TASK',
 }
 export const priorityColors = {
-  low: 'text-green-600',
-  medium: 'text-yellow-600',
-  high: 'text-red-600',
+  low: 'bg-green-600',
+  medium: 'bg-yellow-600',
+  high: 'bg-red-600',
 }
 export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   const handleApplyLabelEditChanges = (newValue: string, field: 'title' | 'description') =>
@@ -87,35 +87,40 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   }
 
   return (
-    <Card
-      className={`w-[400px] min-h-[200px] my-4 mx-auto ${task.completed ? 'line-through' : ''}`}
-    >
-      <CardHeader className="flex flex-row justify-between items-center">
-        <CardTitle className="text-[1.2rem] flex-grow">
+    <div className="py-4">
+      <Card
+        className={`w-[400px] bg-primary min-h-[200px] mx-auto ${
+          task.completed ? 'line-through' : ''
+        }`}
+      >
+        <CardHeader className="flex flex-row justify-between items-center">
+          <CardTitle className="text-[1.2rem] flex-grow">
+            <EditableTextComponent
+              initialValue={task.title}
+              applyChanges={(newValue) => handleApplyLabelEditChanges(newValue, 'title')}
+            />
+          </CardTitle>
+          <Button variant="ghost" onClick={handleDeleteTask}>
+            <Cross2Icon />
+          </Button>
+          <CardDescription></CardDescription>
+        </CardHeader>
+        <CardContent>
           <EditableTextComponent
-            initialValue={task.title}
-            applyChanges={(newValue) => handleApplyLabelEditChanges(newValue, 'title')}
+            initialValue={task.description}
+            type="textarea"
+            applyChanges={(newValue) => handleApplyLabelEditChanges(newValue, 'description')}
           />
-        </CardTitle>
-        <Button variant="ghost" onClick={handleDeleteTask}>
-          <Cross2Icon />
-        </Button>
-        <CardDescription></CardDescription>
-      </CardHeader>
-      <CardContent>
-        <EditableTextComponent
-          initialValue={task.description}
-          type="textarea"
-          applyChanges={(newValue) => handleApplyLabelEditChanges(newValue, 'description')}
-        />
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <EditablePriorityLabel
-          priority={task.priority}
-          applyChanges={handleApplyPriorityEditChanges}
-        ></EditablePriorityLabel>
-        <DatePickerWithPresets task={task} setTasks={setTasks} />
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <EditablePriorityLabel
+            key={task.priority}
+            priority={task.priority}
+            applyChanges={handleApplyPriorityEditChanges}
+          ></EditablePriorityLabel>
+          <DatePickerWithPresets task={task} setTasks={setTasks} />
+        </CardFooter>
+      </Card>
+    </div>
   )
 }

@@ -17,7 +17,7 @@ export const NewTab = () => {
         defaultValue="home"
         value={tab}
         onValueChange={(newValue) => setTab(newValue as TabOption)}
-        className="h-screen p-4 w-screen"
+        className="h-screen p-4 w-screen grid grid-rows-[auto_1fr]"
       >
         <div className="flex items-center gap-4">
           <DashboardTabsList tab={tab} setTab={setTab} />

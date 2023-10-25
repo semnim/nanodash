@@ -4,8 +4,10 @@ section::before {
   content: '';
   position: fixed;
   z-index: -1;
-  width: 100vw;
-  height: 100vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-image: url('../../assets/jon-tyson-pKnmjWQJfAw-unsplash.jpg');
   background-size: cover;
   filter: blur(3px);
@@ -117,4 +119,38 @@ cite {
 }
 .pulse {
   animation: pulsate 0.3s;
+}
+
+.box-shadow {
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.text-shadow {
+  text-shadow:
+    rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.column-drop-zone {
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+  border: 2px dashed rgba(0, 0, 0, 0.2); /* Semi-transparent black dashed border */
+  border-radius: 4px;
+  padding: 10px;
+  transition:
+    background 0.3s ease-in-out,
+    border 0.3s ease-in-out;
+  backdrop-filter: blur(4px); /* Glass-like blur effect */
+}
+
+.column-drop-zone.drag-over {
+  background: rgba(255, 255, 255, 0.5); /* Slightly more opaque when dragging over */
+  border: 2px dashed rgba(0, 0, 0, 0.4);
 }

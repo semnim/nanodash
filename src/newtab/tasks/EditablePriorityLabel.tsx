@@ -1,23 +1,24 @@
-import { useEffect, useState } from 'react'
-import { PrioritySelect, capitalize } from './PrioritySelect'
+import { useState } from 'react'
+import { Priority, PrioritySelect, capitalize } from './PrioritySelect'
 import { priorityColors } from './TaskCard'
+import { Button } from '@/components/ui/button'
 
 export const EditablePriorityLabel = ({
   priority,
   applyChanges,
 }: {
-  priority: 'low' | 'medium' | 'high'
-  applyChanges: (newValue: 'low' | 'medium' | 'high') => void
+  priority: Priority
+  applyChanges: (newValue: Priority) => void
 }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(priority)
 
-  const resetValueEditStates = (newValue: 'low' | 'medium' | 'high') => {
+  const resetValueEditStates = (newValue: Priority) => {
     setValue(newValue)
     setIsEditing(false)
   }
 
-  const submitChanges = (newValue: 'low' | 'medium' | 'high') => {
+  const submitChanges = (newValue: Priority) => {
     applyChanges(newValue)
     resetValueEditStates(value)
   }
@@ -27,8 +28,11 @@ export const EditablePriorityLabel = ({
   )
 
   return (
-    <span onClick={() => setIsEditing(true)} className={`text-sm ${priorityColors[priority]}`}>
+    <Button
+      onClick={() => setIsEditing(!isEditing)}
+      className={`text-sm  ${priorityColors[priority]} hover:text-primary hover:${priorityColors[priority]}/90 w-[150px] justify-start text-primary`}
+    >
       {isEditing ? editComponent : capitalize(priority)}
-    </span>
+    </Button>
   )
 }

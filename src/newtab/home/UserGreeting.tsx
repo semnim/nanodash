@@ -30,7 +30,6 @@ export const UserGreeting = () => {
   useEffect(() => {
     const dateTime = new Date()
     const hourOfDay = dateTime.getHours()
-    console.log(dateTime, hourOfDay)
     if (hourOfDay >= 6 && hourOfDay <= 12) {
       setGreetingPrefix(timeOfDay[0])
     } else if (hourOfDay > 12 && hourOfDay <= 18) {
