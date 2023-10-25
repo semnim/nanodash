@@ -121,7 +121,7 @@ export const Quote = () => {
   return (
     <figure
       ref={parent}
-      className="mx-auto"
+      className="mx-auto px-[5rem] text-center"
       // className="grid max-w-[80rem] mx-auto gap-4 text-center fixed bottom-0 mb-2 leading-7 text-lg"
     >
       <blockquote
