@@ -4,7 +4,7 @@ import { TasksView } from './tasks/TasksView'
 import { DrawingPinIcon, GearIcon, HomeIcon, LayoutIcon } from '@radix-ui/react-icons'
 import { HomeView } from './home/HomeView'
 import { capitalize } from './tasks/PrioritySelect'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import autoAnimate from '@formkit/auto-animate'
 import {
   CommandDialog,
@@ -50,6 +50,7 @@ export const NewTab = () => {
   useEffect(() => {
     setOpen(false)
   }, [tab])
+
   return (
     <section>
       <Tabs
@@ -59,7 +60,7 @@ export const NewTab = () => {
         className="h-screen p-4 w-screen"
       >
         <div className="flex items-center gap-4">
-          <TabsList>
+          <TabsList className="w-[230px] justify-stretch">
             <TabsTrigger className="gap-2" value="home" onClick={() => setTab('home')}>
               <HomeIcon />
               <ConditionalTabLabel label="home" tab={tab} />
