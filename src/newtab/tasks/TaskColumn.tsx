@@ -19,7 +19,7 @@ export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps)
       const newTask: TaskItem = {
         id: uuidv4(),
         title: 'Add a title',
-        description: 'Add a description',
+        description: '...',
         dueDate: undefined,
         priority: 'low',
         status: 'todo',
