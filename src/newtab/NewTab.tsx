@@ -28,7 +28,7 @@ export const NewTab = () => {
           <HomeView />
         </TabsContent>
 
-        <TabsContent value="tasks" className="grid grid-cols-3 justify-items-center gap-4">
+        <TabsContent value="tasks" className="grid lg:grid-cols-3 justify-items-center gap-4">
           <TasksView />
         </TabsContent>
 

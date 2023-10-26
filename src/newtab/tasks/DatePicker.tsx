@@ -48,9 +48,10 @@ export function DatePickerWithPresets({
           variant="ghost"
         >
           <span
-            className={
-              date && new Date(date).getTime() - Date.now() < 0 ? 'text-red-600' : 'text-black'
-            }
+            className={`
+              font-light ${
+                date && new Date(date).getTime() - Date.now() < 0 ? 'text-red-600' : 'text-black'
+              }`}
           >
             {!date ? 'No Deadline' : `Due on ${new Date(date).toLocaleDateString()}`}
           </span>

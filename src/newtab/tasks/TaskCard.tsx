@@ -13,6 +13,7 @@ import { EditableTextComponent } from './EditableTextComponent'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import { EditablePriorityLabel } from './EditablePriorityLabel'
 import { TaskObject } from './TasksView'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export interface TaskItem {
   id: string
@@ -84,11 +85,13 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
       }
     })
   }
-
+  const [parent] = useAutoAnimate()
   return (
-    <div className="py-4">
+    <div className="py-4 select-none" ref={parent}>
       <Card
-        className={`w-[400px] bg-primary min-h-[200px] mx-auto ${task.completed && 'line-through'}`}
+        className={`min-w-[275px] bg-primary min-h-[200px] mx-auto ${
+          task.completed && 'line-through'
+        }`}
       >
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle className="text-[1.2rem] flex-grow">

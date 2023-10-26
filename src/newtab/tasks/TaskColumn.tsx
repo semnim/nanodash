@@ -34,7 +34,8 @@ export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps)
   return (
     <div
       className={`w-full flex flex-col justify-start ${
-        title === 'Doing' && 'border-l-slate-200 border-l-2 border-r-slate-200 border-r-2'
+        title === 'Doing' &&
+        'lg:border-l-slate-200 lg:border-l-2 lg:border-r-slate-200 lg:border-r-2'
       }`}
     >
       <h2 className="text-center scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-white">

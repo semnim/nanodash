@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { HeartFilledIcon, HeartIcon, QuoteIcon, SymbolIcon } from '@radix-ui/react-icons'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Oval } from 'react-loader-spinner'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,7 @@ type QuoteAPIType = {
   author: string
   category: string
   fetchedAt: Date
+  isQuoteFavorite: boolean
 }
 export const Quote = () => {
   const topicsList = [
@@ -93,8 +94,9 @@ export const Quote = () => {
   const [topic, setTopic] = useState(pickRandomTopic())
   const [quote, setQuote] = useState<QuoteAPIType | undefined>()
   const [isLoading, setIsLoading] = useState(true)
+  const [isPulsating, setIsPulsating] = useState(false)
 
-  const { setItem, getItem, remove, getItemKeys } = useLocalStorage('quote')
+  const { setItem, getItem, remove, getItemKeys, getMultipleItems } = useLocalStorage('quote')
 
   const handleLoadQuote = async () => {
     setIsLoading(true)
@@ -107,38 +109,75 @@ export const Quote = () => {
         'X-Api-Key': import.meta.env.VITE_API_KEY,
       },
     })
-    const quote: QuoteAPIType = { ...apiResult.data[0], fetchedAt: Date.now() }
-    setQuote(quote)
-    setItem(quote)
-
-    setIsLoading(false)
+    const quotesFromStorage = getMultipleItems()
+    try {
+      const quote: QuoteAPIType = {
+        ...apiResult.data[0],
+        fetchedAt: Date.now(),
+        isQuoteFavorite: quotesFromStorage.find((qfs) => qfs.quote === apiResult.data[0].quote),
+      }
+      setQuote(quote)
+      setItem(quote, `quote-${uuidv4()}`)
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
     const fetchQuote = async () => {
-      const quoteFromStorage = getItem()
+      const quoteFromStorage = getMultipleItems()
+        .map((saved) => ({ ...saved, fetchedAt: new Date(saved.fetchedAt) }))
+        .toSorted((a, b) => {
+          return a.fetchedAt === b.fetchedAt ? 0 : a.fetchedAt < b.fetchedAt ? 1 : -1
+        })[0]
+      if (!quoteFromStorage) {
+        handleLoadQuote()
+      }
 
       if (quoteFromStorage) {
         const hourDifference = Math.abs(Date.now() - quoteFromStorage.fetchedAt) / (1000 * 60 * 60)
-
         if (hourDifference < 1) {
-          const quote: QuoteAPIType = getItem()
-          setQuote(quote)
+          setQuote(quoteFromStorage)
           setIsLoading(false)
           return
+        } else {
+          handleLoadQuote()
         }
       }
-      handleLoadQuote()
     }
 
     fetchQuote()
   }, [])
-  const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
+  const autoAnimateOptions = { duration: 750, easing: 'ease-in', onElementAdded: false }
+  const autoAnimateOptionsMemoized = useMemo(() => autoAnimateOptions, [])
+  const [parentCallback] = useAutoAnimate(autoAnimateOptionsMemoized)
   const [isQuoteFavorite, setIsQuoteFavorite] = useState(false)
-  if (isLoading || !quote) {
-    return (
-      <div className="glass p-4 w-[85%] min-h-[150px] fixed bottom-[5%] flex justify-center items-center">
-        <div className="flex justify-center">
+  const handleLikeQuote = () => {
+    if (!quote) {
+      return
+    }
+    const updatedQuote = { ...quote, isQuoteFavorite: !quote.isQuoteFavorite }
+    const id = getItemKeys().find((key) => {
+      const savedQuote = getItem(key)
+
+      return savedQuote.quote === quote.quote
+    })
+    setItem(updatedQuote, id ? id : `quote-${uuidv4()}`)
+    setQuote(updatedQuote)
+  }
+  // isLoading: div => flex justify-center items-center
+
+  return (
+    <div
+      // ref={parentCallback}
+      className={`${
+        (isLoading || !quote) && 'flex justify-center items-center'
+      } glass p-4 max-w-[85%] min-h-[175px] h-[175px] fixed bottom-[5%] min-w-[50%] w-[1000px] transition-[height] duration-500 ease-in-out`}
+    >
+      {isLoading || !quote ? (
+        <div className="flex justify-center w-full transition-none">
           <Oval
             height={40}
             width={40}
@@ -147,85 +186,71 @@ export const Quote = () => {
             wrapperClass=""
             visible={true}
             ariaLabel="oval-loading"
-            secondaryColor="#a786df"
+            secondaryColor="black"
             strokeWidth={2}
             strokeWidthSecondary={2}
           />
         </div>
-      </div>
-    )
-  }
-  const handleLikeQuote = () => {
-    setItem(quote, `quote-${uuidv4()}`)
-  }
-  return (
-    <div className="glass p-4 w-[85%] fixed bottom-[5%]" ref={parent}>
-      <blockquote>
-        {quote.quote.split(' ').map((word) =>
-          word === topic ? (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild></TooltipTrigger>
-                <TooltipContent>
-                  <p>Current topic is: {topic}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ) : (
-            word + ' '
-          ),
-        )}
-      </blockquote>
-      <cite>- {quote.author}</cite>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <p className="text-white absolute text-[.6rem] bottom-[10px] cursor-pointer">
+      ) : (
+        <>
+          <div className="w-full h-full">
+            <blockquote className="transition-none overflow-scroll max-h-[75%]">
+              <p className="pt-3">{quote.quote}</p>
+            </blockquote>
+            <cite className="transition-none">- {quote.author}</cite>
+            <p className="text-primary absolute text-[.6rem] bottom-[10px] transition-none">
               “{capitalize(topic)}” quotes
             </p>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Head to the settings section to choose the quote-topics you would like to see.</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+          </div>
+          <div className="flex justify-center items-center mx-auto gap-3 w-full absolute bottom-[5%]">
+            <SymbolIcon
+              className="text-white w-[1.5rem] h-[1.5rem] hover:rotate-45 transition-transform cursor-pointer"
+              onClick={handleLoadQuote}
+            />
+            <div>
+              <Button
+                variant="ghost"
+                className="bg-transparent hover:bg-transparent"
+                onClick={() => {
+                  setIsQuoteFavorite((prev) => {
+                    if (!prev) {
+                      handleLikeQuote()
+                    } else {
+                      const quoteKeys = getItemKeys()
 
-      <div className="flex justify-center items-center mx-auto gap-3 w-full">
-        <SymbolIcon
-          className="text-white w-[1.5rem] h-[1.5rem] hover:rotate-45 transition-transform cursor-pointer"
-          onClick={handleLoadQuote}
-        />
-        <div>
-          <Button
-            variant="ghost"
-            className="bg-transparent hover:bg-transparent"
-            onClick={() => {
-              setIsQuoteFavorite((prev) => {
-                if (!prev) {
-                  handleLikeQuote()
-                } else {
-                  const quoteKeys = getItemKeys()
+                      quoteKeys.forEach((quoteKey) => {
+                        const savedQuote = getItem(quoteKey)
 
-                  quoteKeys.forEach((quoteKey) => {
-                    const savedQuote = getItem(quoteKey)
-
-                    if (savedQuote.quote === quote.quote) {
-                      remove(quoteKey)
+                        if (savedQuote.quote === quote.quote) {
+                          remove(quoteKey)
+                        }
+                      })
                     }
+                    return !isQuoteFavorite
                   })
-                }
-                return !isQuoteFavorite
-              })
-            }}
-          >
-            {isQuoteFavorite ? (
-              <HeartFilledIcon className="pulse w-[1.5rem] h-[1.5rem] cursor-pointer text-red-500 hover:scale-125" />
-            ) : (
-              <HeartIcon className=" text-white w-[1.5rem] h-[1.5rem] cursor-pointer hover:scale-125 hover:text-red-500" />
-            )}
-          </Button>
-        </div>
-      </div>
+                }}
+              >
+                {quote.isQuoteFavorite ? (
+                  <HeartFilledIcon
+                    onAnimationEnd={() => setIsPulsating(false)}
+                    className={`${
+                      isPulsating && 'pulse'
+                    } w-[1.5rem] h-[1.5rem] cursor-pointer text-red-500 hover:scale-125`}
+                  />
+                ) : (
+                  <HeartIcon
+                    onClick={() => {
+                      setIsPulsating(true)
+                      handleLikeQuote()
+                    }}
+                    className=" text-white w-[1.5rem] h-[1.5rem] cursor-pointer hover:scale-125 hover:text-red-500"
+                  />
+                )}
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

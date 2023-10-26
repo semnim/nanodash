@@ -30,7 +30,7 @@ export const EditablePriorityLabel = ({
   return (
     <Button
       onClick={() => setIsEditing(!isEditing)}
-      className={`text-sm  ${priorityColors[priority]} hover:text-primary hover:${priorityColors[priority]}/90 w-[150px] justify-start text-primary`}
+      className={`font-light text-sm  ${priorityColors[priority]} hover:text-primary hover:${priorityColors[priority]}/90 w-[150px] justify-start text-primary`}
     >
       {isEditing ? editComponent : capitalize(priority)}
     </Button>
