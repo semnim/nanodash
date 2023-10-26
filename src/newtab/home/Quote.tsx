@@ -140,6 +140,7 @@ export const Quote = () => {
         const hourDifference = Math.abs(Date.now() - quoteFromStorage.fetchedAt) / (1000 * 60 * 60)
         if (hourDifference < 1) {
           setQuote(quoteFromStorage)
+          setTopic(quoteFromStorage.category)
           setIsLoading(false)
           return
         } else {
