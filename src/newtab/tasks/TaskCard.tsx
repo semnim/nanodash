@@ -14,6 +14,7 @@ import { Cross2Icon } from '@radix-ui/react-icons'
 import { EditablePriorityLabel } from './EditablePriorityLabel'
 import { TaskObject } from './TasksView'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useState } from 'react'
 
 export interface TaskItem {
   id: string
