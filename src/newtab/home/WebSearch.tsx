@@ -85,7 +85,7 @@ export const WebSearch = () => {
         onOpenChange={(newOpen) => setSearchOptionsOpen(newOpen)}
       >
         <DropdownMenuTrigger asChild>
-          <ChevronUpIcon
+          <ChevronDownIcon
             width={25}
             height={25}
             className={`relative z-10 text-primary top-2 right-10 ${
