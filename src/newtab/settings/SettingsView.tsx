@@ -14,7 +14,7 @@ export type Topic = {
   label: string
 }
 export const SettingsView = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(true)
   const [quoteInputValue, setQuoteInputValue] = React.useState('')
   const { setItem, getItem } = useLocalStorage('quote-topics')
   const initialTopicListFromConfig = quoteTopicList.map((topic) => ({
@@ -44,12 +44,12 @@ export const SettingsView = () => {
         <div className="flex items-center justify-between space-x-4 px-4">
           <CollapsibleTrigger asChild>
             <div className="flex justify-between w-full cursor-pointer items-center min-h-[50px] p-2">
-              <h2 className="text-3xl">Choose quotes to display</h2>
+              <h2 className="text-3xl">Customize quote topics</h2>
               <CaretSortIcon className="h-4 w-4 text-lg" />
             </div>
           </CollapsibleTrigger>
         </div>
-        <CollapsibleContent className="p-4 grid gap-4 pb-0">
+        <CollapsibleContent className="p-4 grid gap-4">
           <div className="flex gap-8">
             <div className="w-[50%] text-primary flex flex-nowrap gap-4">
               <Input
@@ -67,7 +67,7 @@ export const SettingsView = () => {
                 <Cross1Icon />
               </Button>
             </div>
-            <h3 className="text-2xl">Selected topics</h3>
+            <h3 className="text-2xl px-10">Selected topics</h3>
           </div>
           <Separator className="w-full" />
           <div className="flex gap-8">

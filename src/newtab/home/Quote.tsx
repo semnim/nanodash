@@ -23,8 +23,9 @@ export const Quote = () => {
     .filter((topic: Topic) => topic.isChecked)
     .map((topic: Topic) => topic.label)
 
+  const choiceList = topicsList.length > 0 ? topicsList : quoteTopicList
+
   const pickRandomTopic = () => {
-    const choiceList = topicsList.length > 0 ? topicsList : quoteTopicList
     const listIdx = Math.floor(Math.random() * (choiceList.length - 1))
 
     return choiceList[listIdx]
@@ -67,14 +68,15 @@ export const Quote = () => {
         .map((saved) => ({ ...saved, fetchedAt: new Date(saved.fetchedAt) }))
         .toSorted((a, b) => {
           return a.fetchedAt === b.fetchedAt ? 0 : a.fetchedAt < b.fetchedAt ? 1 : -1
-        })[0]
+        })
+        .filter((q) => choiceList.includes(q.category))[0]
       if (!quoteFromStorage) {
         handleLoadQuote()
       }
 
       if (quoteFromStorage) {
         const hourDifference = Math.abs(Date.now() - quoteFromStorage.fetchedAt) / (1000 * 60 * 60)
-        if (hourDifference < 1 && topicsList.includes(quoteFromStorage.category)) {
+        if (hourDifference < 1 && choiceList.includes(quoteFromStorage.category)) {
           setQuote(quoteFromStorage)
           setTopic(quoteFromStorage.category)
           setIsLoading(false)
@@ -89,7 +91,6 @@ export const Quote = () => {
   }, [])
   const autoAnimateOptions = { duration: 750, easing: 'ease-in', onElementAdded: false }
   const autoAnimateOptionsMemoized = useMemo(() => autoAnimateOptions, [])
-  const [parentCallback] = useAutoAnimate(autoAnimateOptionsMemoized)
   const [isQuoteFavorite, setIsQuoteFavorite] = useState(false)
   const handleLikeQuote = () => {
     if (!quote) {
@@ -104,11 +105,9 @@ export const Quote = () => {
     setItem(updatedQuote, id ? id : `quote-${uuidv4()}`)
     setQuote(updatedQuote)
   }
-  // isLoading: div => flex justify-center items-center
 
   return (
     <div
-      // ref={parentCallback}
       className={`${
         (isLoading || !quote) && 'flex justify-center items-center'
       } glass p-4 max-w-[85%] min-h-[175px] h-[175px] fixed bottom-[5%] min-w-[50%] w-[1000px] transition-[height] duration-500 ease-in-out`}
