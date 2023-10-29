@@ -5,6 +5,7 @@ import { HomeView } from './home/HomeView'
 import { useState } from 'react'
 import { CommandSearch } from './CommandSearch'
 import { DashboardTabsList } from './DashboardTabsList'
+import { SettingsView } from './settings/SettingsView'
 
 export type TabOption = 'home' | 'tasks' | 'notes' | 'settings'
 
@@ -17,7 +18,7 @@ export const NewTab = () => {
         defaultValue="home"
         value={tab}
         onValueChange={(newValue) => setTab(newValue as TabOption)}
-        className="h-screen p-4 w-screen grid grid-rows-[auto_1fr]"
+        className="h-screen p-4 w-screen flex flex-col"
       >
         <div className="flex items-center gap-4">
           <DashboardTabsList tab={tab} setTab={setTab} />
@@ -28,13 +29,15 @@ export const NewTab = () => {
           <HomeView />
         </TabsContent>
 
-        <TabsContent value="tasks" className="grid lg:grid-cols-3 justify-items-center gap-4">
+        <TabsContent value="tasks" className="lg:grid lg:grid-cols-3 justify-items-center gap-4">
           <TasksView />
         </TabsContent>
 
         <TabsContent value="notes"></TabsContent>
 
-        <TabsContent value="settings"></TabsContent>
+        <TabsContent value="settings" className="grid lg:grid-cols-1 justify-items-center gap-4">
+          <SettingsView />
+        </TabsContent>
       </Tabs>
     </section>
   )

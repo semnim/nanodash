@@ -5,11 +5,12 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Oval } from 'react-loader-spinner'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { capitalize } from '../tasks/PrioritySelect'
 import { v4 as uuidv4 } from 'uuid'
+import { quoteTopicList } from './quoteTopicList'
+import { Topic } from '../settings/SettingsView'
 
-type QuoteAPIType = {
+export type QuoteAPIType = {
   quote: string
   author: string
   category: string
@@ -17,86 +18,21 @@ type QuoteAPIType = {
   isQuoteFavorite: boolean
 }
 export const Quote = () => {
-  const topicsList = [
-    'age',
-    'alone',
-    'amazing',
-    'anger',
-    'architecture',
-    'art',
-    'attitude',
-    'beauty',
-    'best',
-    'birthday',
-    'business',
-    'car',
-    'change',
-    'communications',
-    'computers',
-    'cool',
-    'courage',
-    'dad',
-    'dating',
-    'death',
-    'design',
-    'dreams',
-    'education',
-    'environmental',
-    'equality',
-    'experience',
-    'failure',
-    'faith',
-    'family',
-    'famous',
-    'fear',
-    'fitness',
-    'food',
-    'forgiveness',
-    'freedom',
-    'friendship',
-    'funny',
-    'future',
-    'god',
-    'good',
-    'government',
-    'graduation',
-    'great',
-    'happiness',
-    'health',
-    'history',
-    'home',
-    'hope',
-    'humor',
-    'imagination',
-    'inspirational',
-    'intelligence',
-    'jealousy',
-    'knowledge',
-    'leadership',
-    'learning',
-    'legal',
-    'life',
-    'love',
-    'marriage',
-    'medical',
-    'men',
-    'mom',
-    'money',
-    'morning',
-    'movies',
-    'success',
-  ]
+  const { setItem, getItem, remove, getItemKeys, getMultipleItems } = useLocalStorage('quote')
+  const topicsList: Topic[] = getItem('quote-topics')
+    .filter((topic: Topic) => topic.isChecked)
+    .map((topic: Topic) => topic.label)
 
   const pickRandomTopic = () => {
-    const listIdx = Math.floor(Math.random() * (topicsList.length - 1))
-    return topicsList[listIdx]
+    const choiceList = topicsList.length > 0 ? topicsList : quoteTopicList
+    const listIdx = Math.floor(Math.random() * (choiceList.length - 1))
+
+    return choiceList[listIdx]
   }
   const [topic, setTopic] = useState(pickRandomTopic())
   const [quote, setQuote] = useState<QuoteAPIType | undefined>()
   const [isLoading, setIsLoading] = useState(true)
   const [isPulsating, setIsPulsating] = useState(false)
-
-  const { setItem, getItem, remove, getItemKeys, getMultipleItems } = useLocalStorage('quote')
 
   const handleLoadQuote = async () => {
     setIsLoading(true)
@@ -138,7 +74,7 @@ export const Quote = () => {
 
       if (quoteFromStorage) {
         const hourDifference = Math.abs(Date.now() - quoteFromStorage.fetchedAt) / (1000 * 60 * 60)
-        if (hourDifference < 1) {
+        if (hourDifference < 1 && topicsList.includes(quoteFromStorage.category)) {
           setQuote(quoteFromStorage)
           setTopic(quoteFromStorage.category)
           setIsLoading(false)

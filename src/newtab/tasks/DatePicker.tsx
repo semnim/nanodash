@@ -21,7 +21,9 @@ export function DatePickerWithPresets({
   task: TaskItem
   setTasks: React.Dispatch<React.SetStateAction<TaskObject>>
 }) {
-  const [date, setDate] = React.useState<Date | undefined>(task.dueDate)
+  const [date, setDate] = React.useState<Date | undefined>(
+    task.dueDate ? new Date(task.dueDate) : undefined,
+  )
   const [open, setOpen] = React.useState(false)
 
   React.useEffect(() => {
@@ -38,6 +40,13 @@ export function DatePickerWithPresets({
     })
   }, [date])
 
+  const options = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }
+
   return (
     <Popover open={open}>
       <PopoverTrigger asChild>
@@ -50,10 +59,12 @@ export function DatePickerWithPresets({
           <span
             className={`
               font-light ${
-                date && new Date(date).getTime() - Date.now() < 0 ? 'text-red-600' : 'text-black'
+                date && date.getTime() - Date.now() < 0 ? 'text-red-600' : 'text-black'
               }`}
           >
-            {!date ? 'No Deadline' : `Due on ${new Date(date).toLocaleDateString()}`}
+            {!date
+              ? 'No Deadline'
+              : date.toLocaleDateString('en-US', options as Intl.DateTimeFormatOptions)}
           </span>
         </Button>
       </PopoverTrigger>
@@ -79,7 +90,9 @@ export function DatePickerWithPresets({
             mode="single"
             selected={date}
             onSelect={(date) => {
-              setDate(date)
+              setDate((prev) => {
+                return date
+              })
               setOpen(false)
             }}
           />

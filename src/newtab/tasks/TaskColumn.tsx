@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Draggable, DroppableProvided } from 'react-beautiful-dnd'
 import { TaskItem, TaskCard } from './TaskCard'
 import { AddCardPlaceholder } from './AddCardPlaceholder'
 import { TaskObject } from './TasksView'
 import { v4 as uuidv4 } from 'uuid'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import autoAnimate from '@formkit/auto-animate'
 
 export interface TasksListProps {
   tasks: TaskItem[]
@@ -17,8 +19,8 @@ export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps)
     setTasks((prev) => {
       const newTask: TaskItem = {
         id: uuidv4(),
-        title: 'Add a title',
-        description: '...',
+        title: '',
+        description: '',
         dueDate: undefined,
         priority: 'low',
         status: 'todo',
@@ -31,6 +33,10 @@ export const TaskColumn = ({ provided, tasks, setTasks, title }: TasksListProps)
       return newObj
     })
 
+  const parent = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current)
+  }, [])
   return (
     <div
       className={`w-full flex flex-col justify-start ${

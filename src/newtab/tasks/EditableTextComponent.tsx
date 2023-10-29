@@ -34,11 +34,6 @@ export const EditableTextComponent = ({
     const isSubmit = event.key === 'Enter' && !event.shiftKey
     const isClose = event.key === 'Escape'
 
-    if (isSubmit && value.trim().length < 1) {
-      setValue(initialValue)
-      setIsEditing(false)
-      return
-    }
     if (isSubmit || isClose) {
       submitChanges()
     }
@@ -66,13 +61,14 @@ export const EditableTextComponent = ({
     ) : (
       <Textarea
         onBlur={() => submitChanges()}
+        placeholder="Add a description"
         onFocus={(event) =>
           event.target.setSelectionRange(
             event.currentTarget.value.length,
             event.currentTarget.value.length,
           )
         }
-        className={' min-h-[200px] font-semibold leading-none tracking-tight'}
+        className={'min-h-[50px] leading-none tracking-tight'}
         autoFocus
         value={value}
         required
@@ -88,7 +84,19 @@ export const EditableTextComponent = ({
       className="[&>ul]:list-disc [&>ul]:px-4 whitespace-pre-wrap break-words break-all"
       onClick={() => setIsEditing(true)}
     >
-      {isEditing ? editComponent : <Markdown>{initialValue}</Markdown>}
+      {isEditing ? (
+        editComponent
+      ) : (
+        <Markdown
+          className={`pl-3 ${
+            type === 'textarea' ? 'min-h-[50px] pt-[.33rem] text-[.825rem]' : 'min-h-[20px]'
+          } font-normal text-sm ${!initialValue && 'text-muted-foreground'}`}
+        >
+          {initialValue.length === 0
+            ? `Add a ${type === 'input' ? 'task' : 'description'}`
+            : initialValue}
+        </Markdown>
+      )}
     </div>
   )
 }

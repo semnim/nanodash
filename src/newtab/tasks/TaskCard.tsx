@@ -10,11 +10,12 @@ import {
 import { Button } from '@/components/ui/button'
 import { DatePickerWithPresets } from './DatePicker'
 import { EditableTextComponent } from './EditableTextComponent'
-import { Cross2Icon } from '@radix-ui/react-icons'
+import { CaretDownIcon, CaretUpIcon, Cross2Icon } from '@radix-ui/react-icons'
 import { EditablePriorityLabel } from './EditablePriorityLabel'
 import { TaskObject } from './TasksView'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useState } from 'react'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 export interface TaskItem {
   id: string
@@ -40,6 +41,8 @@ export const priorityColors = {
   high: 'bg-red-600',
 }
 export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+
   const handleApplyLabelEditChanges = (newValue: string, field: 'title' | 'description') =>
     setTasks((prev) => {
       const status = task.status
@@ -87,6 +90,52 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
     })
   }
   const [parent] = useAutoAnimate()
+
+  return (
+    <Collapsible className="py-4 select-none" open={isOpen} onOpenChange={setIsOpen}>
+      <Card
+      // className={`min-w-[275px] bg-primary min-h-[200px] mx-auto ${
+      //   task.completed && 'line-through'
+      // }`}
+      >
+        <CardHeader className="flex flex-row justify-between items-center w-full">
+          <CardTitle className="text-[1.2rem] flex-grow">
+            <EditableTextComponent
+              initialValue={task.title}
+              applyChanges={(newValue) => handleApplyLabelEditChanges(newValue, 'title')}
+            />
+          </CardTitle>
+          <div className="flex flex-wrap justify-end">
+            <Button variant="ghost" onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? <CaretUpIcon /> : <CaretDownIcon />}
+            </Button>
+            <Button variant="ghost" onClick={handleDeleteTask}>
+              <Cross2Icon />
+            </Button>
+          </div>
+          <CardDescription></CardDescription>
+        </CardHeader>
+        <CollapsibleContent>
+          <CardContent>
+            <EditableTextComponent
+              initialValue={task.description}
+              type="textarea"
+              applyChanges={(newValue) => handleApplyLabelEditChanges(newValue, 'description')}
+            />
+          </CardContent>
+          <CardFooter className="flex justify-between px-8">
+            <EditablePriorityLabel
+              key={task.priority}
+              priority={task.priority}
+              applyChanges={handleApplyPriorityEditChanges}
+            ></EditablePriorityLabel>
+            <DatePickerWithPresets task={task} setTasks={setTasks} />
+          </CardFooter>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
+  )
+
   return (
     <div className="py-4 select-none" ref={parent}>
       <Card
