@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { CaretSortIcon, Cross1Icon } from '@radix-ui/react-icons'
+import { CaretSortIcon, Cross1Icon, DoubleArrowDownIcon } from '@radix-ui/react-icons'
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { quoteTopicList } from '../home/quoteTopicList'
@@ -38,13 +38,19 @@ export const SettingsView = () => {
     })
   }
 
+  const [showScrollIndicator, setShowScrollIndicator] = React.useState(true)
+
   return (
     <div className="glass flex flex-col items-center w-full justify-start">
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2 text-primary w-full">
         <div className="flex items-center justify-between space-x-4 px-4">
           <CollapsibleTrigger asChild>
             <div className="flex justify-between w-full cursor-pointer items-center min-h-[50px] p-2">
-              <h2 className="text-3xl">Customize quote topics</h2>
+              <div>
+                <h2 className="text-3xl">Customize quote topics</h2>
+                <h3>Select topics to filter the fetched quotes by.</h3>
+                <h3>By default, no topics are excluded.</h3>
+              </div>
               <CaretSortIcon className="h-4 w-4 text-lg" />
             </div>
           </CollapsibleTrigger>
@@ -59,11 +65,13 @@ export const SettingsView = () => {
                 onChange={(event) => setQuoteInputValue(event.target.value.toLowerCase())}
               />
               <Button
-                variant="ghost"
+                variant="outline"
+                className="flex gap-4"
                 onClick={() => {
                   setTopics((prev) => prev.map((t) => ({ label: t.label, isChecked: false })))
                 }}
               >
+                <span>Reset selection</span>
                 <Cross1Icon />
               </Button>
             </div>
@@ -71,7 +79,10 @@ export const SettingsView = () => {
           </div>
           <Separator className="w-full" />
           <div className="flex gap-8">
-            <div className="grid grid-cols-3 w-[50%] overflow-scroll max-h-[400px]">
+            <div
+              className="grid grid-cols-3 w-[50%] overflow-scroll max-h-[400px]"
+              onScroll={() => setShowScrollIndicator(false)}
+            >
               {topics
                 .filter((topic) => topic.label.toLowerCase().includes(quoteInputValue))
                 .map((topic) => {
@@ -86,6 +97,9 @@ export const SettingsView = () => {
                   )
                 })}
             </div>
+            {showScrollIndicator && (
+              <DoubleArrowDownIcon className="absolute bottom-8 right-[50%] blink" />
+            )}
             <Separator orientation="vertical" />
             <div>
               {topics
