@@ -94,9 +94,9 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   return (
     <Collapsible className="py-4 select-none" open={isOpen} onOpenChange={setIsOpen}>
       <Card
-      // className={`min-w-[275px] bg-primary min-h-[200px] mx-auto ${
-      //   task.completed && 'line-through'
-      // }`}
+        className={`min-w-[275px] bg-primary min-h-[200px] mx-auto ${
+          task.completed && 'line-through'
+        }`}
       >
         <CardHeader className="flex flex-row justify-between items-center w-full">
           <CardTitle className="text-[1.2rem] flex-grow">
