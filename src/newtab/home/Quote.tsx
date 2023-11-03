@@ -19,12 +19,11 @@ export type QuoteAPIType = {
 }
 export const Quote = () => {
   const { setItem, getItem, remove, getItemKeys, getMultipleItems } = useLocalStorage('quote')
-  const topicsList: Topic[] = getItem('quote-topics')
+  const topicsList: string[] = getItem('quote-topics')
     .filter((topic: Topic) => topic.isChecked)
     .map((topic: Topic) => topic.label)
 
-  const choiceList =
-    topicsList.length > 0 ? topicsList : quoteTopicList.map((t) => ({ label: t, isChecked: false }))
+  const choiceList = topicsList.length > 0 ? topicsList : quoteTopicList
 
   const pickRandomTopic = () => {
     const listIdx = Math.floor(Math.random() * (choiceList.length - 1))
@@ -136,7 +135,7 @@ export const Quote = () => {
             </blockquote>
             <cite className="transition-none">- {quote.author}</cite>
             <p className="text-primary absolute text-[.6rem] bottom-[10px] transition-none">
-              “{capitalize(topic.label)}” quotes
+              “{capitalize(topic)}” quotes
             </p>
           </div>
           <div className="flex justify-center items-center mx-auto gap-3 w-full absolute bottom-[5%]">

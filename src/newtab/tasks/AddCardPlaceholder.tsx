@@ -17,7 +17,7 @@ export const AddCardPlaceholder = ({ onClick }: { onClick: () => void }) => {
       <Card
         onClick={onClick}
         className={`min-w-[275px]
-      min-h-[200px] 
+      min-h-[100px] 
       mx-auto
       h-[170px] 
       border-dashed 

@@ -94,7 +94,7 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   return (
     <Collapsible className="py-4 select-none" open={isOpen} onOpenChange={setIsOpen}>
       <Card
-        className={`min-w-[275px] bg-primary min-h-[200px] mx-auto ${
+        className={`min-w-[275px] bg-primary min-h-[100px] mx-auto ${
           task.completed && 'line-through'
         }`}
       >
@@ -139,7 +139,7 @@ export const TaskCard = ({ task, setTasks }: TaskItemCardProps) => {
   return (
     <div className="py-4 select-none" ref={parent}>
       <Card
-        className={`min-w-[275px] bg-primary min-h-[200px] mx-auto ${
+        className={`min-w-[275px] bg-primary min-h-[100px] mx-auto ${
           task.completed && 'line-through'
         }`}
       >
